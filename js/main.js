@@ -58,7 +58,7 @@ function start() {
         showSubsStats(parseQuery(response));
 
         setInterval(function() {
-            querySubs().then(function(){
+            querySubs().then(function(response){
                 showSubsStats(parseQuery(response));
             });
         }, updateInterval);
@@ -264,7 +264,6 @@ function create ()
 
     this.events.on('subsEvent', function() {
         subsParticles.emitParticleAt(0, 0);
-        console.log("XD")
     }, this);
 
 }
@@ -274,5 +273,4 @@ function update() {
     let sideX = Math.sin(this.spaceship.rotation) * offset;
     let sideY = Math.cos(this.spaceship.rotation) * offset;
     this.fire.setPosition(this.spaceship.x + sideY, this.spaceship.y + sideX + this.rocket.displayHeight * 0.1);
-    console.log(this.rocket);
 }
