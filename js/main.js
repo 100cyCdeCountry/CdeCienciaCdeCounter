@@ -126,7 +126,7 @@ function create ()
     earth.x += earth.displayWidth;
 
     var marti = this.add.image(0, 0, 'marti');
-    var rocket = this.add.image(0, 0, 'rocket');
+    this.rocket = this.add.image(0, 0, 'rocket');
 
     //jeffry.scaleX = jeffry.scaleX = 0.4;
 
@@ -149,18 +149,18 @@ function create ()
         repeatDelay: 3500 * 5 - 200
     });
 
-    if(rocket.width > window.innerWidth) {
-        rocket.displayWidth = window.innerWidth * 0.8;
-        scaleFactor = rocket.scaleX;
-        rocket.scaleY = scaleFactor;
+    if(this.rocket.width > window.innerWidth) {
+        this.rocket.displayWidth = window.innerWidth * 0.8;
+        scaleFactor = this.rocket.scaleX;
+        this.rocket.scaleY = scaleFactor;
     }
 
-    marti.x = rocket.width * .1 * scaleFactor;
-    marti.y = -rocket.height * .3 * scaleFactor;
+    marti.x = this.rocket.width * .1 * scaleFactor;
+    marti.y = -this.rocket.height * .3 * scaleFactor;
     marti.scaleX = marti.scaleY = scaleFactor * .07;
 
     this.rocketFlame = this.add.image(0, 0, 'star');
-    this.rocketFlame.x = -rocket.width * 0.4 * scaleFactor;
+    this.rocketFlame.x = -this.rocket.width * 0.4 * scaleFactor;
 
     var particleStar = this.add.particles('star');
     var particleFire = this.add.particles('fire');
@@ -189,7 +189,7 @@ function create ()
         scale: { min: 0.1 * scaleFactor, max: 0.3 * scaleFactor },
     });
 
-    this.spaceship = this.add.container(config.width / 2, config.height / 2, [ marti, rocket, this.rocketFlame ]);
+    this.spaceship = this.add.container(config.width / 2, config.height / 2, [ marti, this.rocket, this.rocketFlame ]);
     this.spaceship.setDepth(1);
     this.spaceship.angle = 5;
 
@@ -271,8 +271,8 @@ function create ()
 
 function update() {
     let offset = this.rocketFlame.x;
-    let sideX = Math.sin(this.spaceship.rotation /* Math.PI / 180 */) * offset;
-    let sideY = Math.cos(this.spaceship.rotation /* Math.PI / 180 */) * offset;
-    console.log([sideX, sideY, offset]);
-    this.fire.setPosition(this.spaceship.x + sideY, this.spaceship.y + sideX);
+    let sideX = Math.sin(this.spaceship.rotation) * offset;
+    let sideY = Math.cos(this.spaceship.rotation) * offset;
+    this.fire.setPosition(this.spaceship.x + sideY, this.spaceship.y + sideX + this.rocket.displayHeight * 0.1);
+    console.log(this.rocket);
 }
