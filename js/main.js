@@ -1,7 +1,13 @@
-
 const gapiKey = "AIzaSyBJLpLCYlGEjzvE4nhXnCH9MeG24WW9Vfk";
 const channelId = "UC52hytXteCKmuOzMViTK8_w";
 const updateInterval = 60000;
+
+function getSubSParameter(){
+    var url = new URL(window.location.href);
+    return parseInt(url.searchParams.get("subs"));
+}
+
+const subsPrediction = getSubSParameter() || 1000000;
 
 const subsStart = {
     subs: 946772,
@@ -20,7 +26,7 @@ function showSubsStats(subs) {
     var dateDom = document.getElementById("millonDate");
 
     amountDom.textContent = subs.toLocaleString();
-    let millionDate = calculateMillionDate(subsStart, {subs: subs, date: new Date().getTime()});
+    let millionDate = calculateMillionDate(subsStart, {subs: subs, date: new Date().getTime()}, subsPrediction);
     dateDom.textContent =
         millionDate.getDate() + "/" + (millionDate.getMonth() + 1) + "/" + millionDate.getFullYear();
 
@@ -67,6 +73,8 @@ function start() {
         console.error({error: "Gapi on query subs", data: reason})
     });
 
+    if(subsPrediction !== 1000000)
+        subsPredictionAmount.innerText = subsPrediction.toLocaleString();
 
 };
 // 1. Load the JavaScript client library.
