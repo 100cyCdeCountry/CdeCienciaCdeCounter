@@ -3,27 +3,39 @@ const channelId = "UC52hytXteCKmuOzMViTK8_w";
 const updateInterval = 60000;
 
 function getSubSParameter(){
-    var url = new URL(window.location.href);
+    let url = new URL(window.location.href);
     return parseInt(url.searchParams.get("subs"));
 }
 
-const subsPrediction = getSubSParameter() || 1000000;
+let subsPrediction = getSubSParameter();
 
 const subsStart = {
     subs: 946772,
     date: new Date(2018, 9, 20).getTime()
 };
 
+function nextMillion(subs) {
+    return subs - (subs % 1000000) + 1000000;
+}
+
 function calculateMillionDate(subStart, subNow, subToReach) {
     if(subToReach === undefined)
-        subToReach = 1000000;
+        subToReach = nextMillion(subNow.subs);
     return new Date((subToReach - subStart.subs)/(subNow.subs - subStart.subs)
         * (subNow.date - subStart.date) + subStart.date);
 }
 
 function showSubsStats(subs) {
-    var amountDom = document.getElementById("subsAmount");
-    var dateDom = document.getElementById("millonDate");
+    let amountDom = document.getElementById("subsAmount");
+    let dateDom = document.getElementById("millonDate");
+
+    if(isNaN(subsPrediction))
+        subsPrediction = nextMillion(subs);
+
+    if(subsPrediction % 1000000 === 0)
+        subsPredictionAmount.innerText = subsPrediction / 1000000 + 'M';
+    else
+        subsPredictionAmount.innerText = subsPrediction.toLocaleString();
 
     amountDom.textContent = subs.toLocaleString();
     let millionDate = calculateMillionDate(subsStart, {subs: subs, date: new Date().getTime()}, subsPrediction);
@@ -44,7 +56,7 @@ function start() {
     // 2. Initialize the JavaScript client library.
     let client =  gapi.client.init({
         'apiKey': gapiKey,
-    })
+    });
 
     let querySubs = function() {
         return client.then(function() {
@@ -54,11 +66,11 @@ function start() {
                 + '&fields=items%2Fstatistics%2FsubscriberCount&',
             })
         });
-    }
+    };
 
     let parseQuery = function(response) {
         return parseInt(response.result.items[0].statistics.subscriberCount);
-    }
+    };
 
     querySubs().then(function(response) {
         showSubsStats(parseQuery(response));
@@ -73,8 +85,6 @@ function start() {
         console.error({error: "Gapi on query subs", data: reason})
     });
 
-    if(subsPrediction !== 1000000)
-        subsPredictionAmount.innerText = subsPrediction.toLocaleString();
 
 };
 // 1. Load the JavaScript client library.
