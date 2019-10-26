@@ -9,9 +9,15 @@ function getSubSParameter(){
 
 let subsPrediction = getSubSParameter();
 
-const subsStart = {
+// First count
+/*const subsStart = {
     subs: 946772,
     date: new Date(2018, 9, 20).getTime()
+};*/
+
+const subsStart = {
+    subs: 1190000,
+    date: new Date(2019, 10, 26).getTime()
 };
 
 function nextMillion(subs) {
@@ -32,7 +38,7 @@ function showSubsStats(subs) {
     if(isNaN(subsPrediction))
         subsPrediction = nextMillion(subs);
 
-    if(subsPrediction % 1000000 === 0)
+    if(subsPrediction % 10000 === 0)
         subsPredictionAmount.innerText = subsPrediction / 1000000 + 'M';
     else
         subsPredictionAmount.innerText = subsPrediction.toLocaleString();
