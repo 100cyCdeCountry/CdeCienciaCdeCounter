@@ -1,6 +1,6 @@
 const gapiKey = "AIzaSyBJLpLCYlGEjzvE4nhXnCH9MeG24WW9Vfk";
 const channelId = "UC52hytXteCKmuOzMViTK8_w";
-const updateInterval = 60000;
+const updateInterval = 600000;
 
 function getSubSParameter(){
     let url = new URL(window.location.href);
@@ -16,8 +16,8 @@ let subsPrediction = getSubSParameter();
 };*/
 
 const subsStart = {
-    subs: 1190000,
-    date: new Date(2019, 10, 26).getTime()
+    subs: 1160935,
+    date: new Date(2019, 9, 10).getTime()
 };
 
 function nextMillion(subs) {
@@ -43,7 +43,10 @@ function showSubsStats(subs) {
     else
         subsPredictionAmount.innerText = subsPrediction.toLocaleString();
 
-    amountDom.textContent = subs.toLocaleString();
+//    amountDom.textContent = subs.toLocaleString();
+    amountDom.textContent = subs / 1000000 + 'M';
+
+
     let millionDate = calculateMillionDate(subsStart, {subs: subs, date: new Date().getTime()}, subsPrediction);
     dateDom.textContent =
         millionDate.getDate() + "/" + (millionDate.getMonth() + 1) + "/" + millionDate.getFullYear();
