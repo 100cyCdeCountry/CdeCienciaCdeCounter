@@ -1,6 +1,6 @@
 const gapiKey = "AIzaSyBJLpLCYlGEjzvE4nhXnCH9MeG24WW9Vfk";
 const channelId = "UC52hytXteCKmuOzMViTK8_w";
-const updateInterval = 60000;
+const updateInterval = 600000;
 
 function getSubSParameter(){
     let url = new URL(window.location.href);
@@ -9,9 +9,15 @@ function getSubSParameter(){
 
 let subsPrediction = getSubSParameter();
 
-const subsStart = {
+// First count
+/*const subsStart = {
     subs: 946772,
     date: new Date(2018, 9, 20).getTime()
+};*/
+
+const subsStart = {
+    subs: 1160935,
+    date: new Date(2019, 9, 10).getTime()
 };
 
 function nextMillion(subs) {
@@ -32,12 +38,15 @@ function showSubsStats(subs) {
     if(isNaN(subsPrediction))
         subsPrediction = nextMillion(subs);
 
-    if(subsPrediction % 1000000 === 0)
+    if(subsPrediction % 10000 === 0)
         subsPredictionAmount.innerText = subsPrediction / 1000000 + 'M';
     else
         subsPredictionAmount.innerText = subsPrediction.toLocaleString();
 
-    amountDom.textContent = subs.toLocaleString();
+//    amountDom.textContent = subs.toLocaleString();
+    amountDom.textContent = subs / 1000000 + 'M';
+
+
     let millionDate = calculateMillionDate(subsStart, {subs: subs, date: new Date().getTime()}, subsPrediction);
     dateDom.textContent =
         millionDate.getDate() + "/" + (millionDate.getMonth() + 1) + "/" + millionDate.getFullYear();
